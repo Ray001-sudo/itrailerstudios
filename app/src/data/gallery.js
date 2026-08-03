@@ -1,0 +1,17 @@
+export const galleryImages = [
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b448250202b92397e82ad5_4.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b44825fcced289055de2ee_2.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b448253c940a53d325cfbd_Hiigo%20WalhallaZF-24.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b44826c35638d62c69f95a_Hiigo%20WalhallaZF-65.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b448260db36cef52541c55_Naamloos-1.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b448274f795bc99ccbc907_3.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b44828dcd4bbf1b4d01e99_IMG_1677.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68b44828b1bdb32f604c8f74_IMG_1675.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68ef78101da2bd1eb34d2c97_portfoliofoto9148.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68ef78104ede993841b58e7b_portfoliofoto91824.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68ef7811591a1cd017c1616c_portfoliofoto0149.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68ef78114415a552ae4f7d9e_portfoliofoto1908.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68fb2e17fc3a4f1890edf5ed_carnaval5.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68fb2e17f972ffb989902686_seatree3.avif',
+  'https://cdn.prod.website-files.com/68b441e1fde228bec9177841/68fb2e174519ae6fb1e1856f_ab4.avif',
+]

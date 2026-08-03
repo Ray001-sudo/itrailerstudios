@@ -1,0 +1,754 @@
+@import url('https://fonts.googleapis.com/css?family=Space%20Mono:700');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500');
+
+/* Font smoothing — matches the reference HTML's inline <style> block */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -o-font-smoothing: antialiased;
+}
+
+/* Hide scrollbars globally */
+::-webkit-scrollbar {
+  display: none;
+}
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* ── iTrailerStudios SVG logo sizing ─────────────────────────────────────
+   The Logo component is an inline SVG with height="40" set on the element.
+   These rules just ensure the Webflow shared stylesheet doesn't override
+   the intrinsic size and that it aligns nicely in the navbar/footer.       */
+.navbar5_logo,
+.footer1_logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Hide the back-to-top wrapper on load (prevents flash).
+   GSAP sets autoAlpha: 1 on it once the scroll threshold is crossed,
+   and autoAlpha: 0 on the button itself until the user scrolls far enough. */
+[data-back-to-top="wrap"] {
+  opacity: 0;
+}
+
+
+/* Scroll progress bar (fallback positioning in case the shared stylesheet
+   doesn't define it, since it was added purely via the custom GSAP snippet) */
+.progress-bar-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 999;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--color-scheme-1--accent, #1f6f6b);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+/* Back-to-top button interactions (from original inline Webflow script) */
+.back-top__arrow-row {
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0, 1);
+}
+
+.back-top__button {
+  transition: border-width 0.5s cubic-bezier(0.65, 0, 0, 1);
+}
+
+.back-top__button:focus-visible {
+  border-width: 0.6em;
+}
+
+.back-top__button:focus-visible .back-top__arrow-row {
+  transform: translate(0px, -100%);
+}
+
+@media (hover: hover) {
+  .back-top__button:hover {
+    border-width: 0.6em;
+  }
+
+  .back-top__button:hover .back-top__arrow-row {
+    transform: translate(0px, -100%);
+  }
+}
+
+/* ============================================================
+   Hero scroll-zoom: the entire .header83_images-layout starts at
+   scale(3.2) in the Webflow CSS and GSAP animates it to scale(1).
+   .header83_background-images must clip the overflowing scaled grid.
+   Individual image-wrappers also need overflow:hidden for the
+   header81 parallax and gallery scroll effects.
+   ============================================================ */
+.header83_background-images {
+  /* Match Webflow exactly: position:absolute + inset:0%, no overflow:hidden */
+  /* Clipping is handled by .header83_content-wrapper which has overflow:hidden */
+  position: absolute;
+  inset: 0%;
+  z-index: -1;
+}
+
+.header83_images-layout {
+  will-change: transform;
+  /* Match Webflow: grid fills the full background-images container */
+  width: 100%;
+  height: 100%;
+  /* Explicitly set 3 equal rows so image wrappers don't collapse */
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.header83_image-wrapper {
+  /* min-height:0 lets the grid row shrink image wrappers correctly */
+  min-height: 0;
+  position: relative;
+}
+
+.header81_image-wrapper,
+.gallery24_image-wrapper {
+  overflow: hidden;
+}
+
+.header83_image,
+.header81_image,
+.gallery24_image {
+  will-change: transform;
+}
+
+/* ============================================================
+   Hero content: disable pointer events when faded out so the
+   invisible element doesn't block interaction with sections below.
+   ============================================================ */
+.header83_content {
+  pointer-events: auto;
+}
+
+.header83_content[style*="opacity: 0"],
+.header83_content[style*="opacity:0"] {
+  pointer-events: none;
+}
+
+/* ============================================================
+   section_header81 — "Oops, one more picture" split section.
+   The Webflow shared stylesheet styles this as a two-column
+   hero with a full-height image on the right. These overrides
+   ensure the image is clipped for the parallax zoom and the
+   layout doesn't collapse in React.
+   ============================================================ */
+.section_header81 {
+  position: relative;
+  z-index: 1;
+}
+
+@media screen and (min-width: 992px) {
+  .header81_component {
+    height: 300vh;
+    position: relative;
+  }
+
+  .header81_content-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .header81_content-left {
+    position: relative;
+    z-index: 1;
+    max-width: 35rem;
+    margin-left: 5vw;
+    margin-right: 5rem;
+    pointer-events: auto;
+    will-change: opacity, transform;
+  }
+
+  .header81_content-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 100vh;
+    z-index: 2;
+    overflow: hidden;
+    will-change: width;
+  }
+
+  .header81_image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .header81_image {
+    will-change: transform;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .header81_component {
+    height: auto;
+    position: relative;
+  }
+
+  .header81_content-wrapper {
+    position: static;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    gap: 2.5rem;
+  }
+
+  .header81_content-left {
+    position: static;
+    margin-left: 5%;
+    margin-right: 5%;
+    max-width: 100%;
+  }
+
+  .header81_content-right {
+    position: static;
+    width: 100%;
+    height: 60vh;
+    min-height: 350px;
+  }
+
+  .header81_image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header81_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+
+/* ============================================================
+   section_gallery24 — horizontal scroll gallery.
+   The gallery uses a sticky wrapper + spacer approach.
+   - Do NOT use overflow:hidden (breaks sticky scroll)
+   - Use contain:paint to clip overflowing children without
+     affecting scroll, preventing below-sections from bleeding through
+   - isolation:isolate creates a new stacking context so z-index
+     from below sections can't paint over the sticky panel
+   ============================================================ */
+.section_gallery24 {
+  position: relative;
+  contain: paint;
+  isolation: isolate;
+}
+
+.gallery24_component {
+  position: relative;
+}
+
+/* ============================================================
+   Ensure all elements inherit the color from its parent
+   ============================================================ */
+a,
+.w-input,
+.w-select,
+.w-tab-link,
+.w-nav-link,
+.w-nav-brand,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-slider-arrow-left,
+.w-slider-arrow-right,
+.w-dropdown-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-size: inherit;
+}
+
+/* Focus state style for keyboard navigation for the focusable elements */
+*[tabindex]:focus-visible,
+  input[type="file"]:focus-visible {
+   outline: 0.125rem solid #4d65ff;
+   outline-offset: 0.125rem;
+}
+
+/* Get rid of top margin on first element in any rich text element */
+.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
+  margin-top: 0 !important;
+}
+
+/* Get rid of bottom margin on last element in any rich text element */
+.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
+	margin-bottom: 0 !important;
+}
+
+/* Prevent all click and hover interaction with an element */
+.pointer-events-off {
+	pointer-events: none;
+}
+
+/* Enables all click and hover interaction with an element */
+.pointer-events-on {
+  pointer-events: auto;
+}
+
+/* Create a class of .div-square which maintains a 1:1 dimension of a div */
+.div-square::after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+
+/* Make sure containers never lose their center alignment */
+.container-medium,.container-small, .container-large {
+	margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+
+/* Apply "..." after 3 lines of text */
+.text-style-3lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+/* Apply "..." after 2 lines of text */
+.text-style-2lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+/* Adds inline flex display */
+.display-inlineflex {
+  display: inline-flex;
+}
+
+/* These classes are never overwritten */
+.hide {
+  display: none !important;
+}
+
+/* Remove default Webflow chevron from form select */
+select{
+  -webkit-appearance:none;
+}
+
+
+@media screen and (max-width: 991px) {
+    .hide, .hide-tablet {
+        display: none !important;
+    }
+}
+  @media screen and (max-width: 767px) {
+    .hide-mobile-landscape{
+      display: none !important;
+    }
+}
+  @media screen and (max-width: 479px) {
+    .hide-mobile{
+      display: none !important;
+    }
+}
+ 
+.margin-0 {
+  margin: 0rem !important;
+}
+  
+.padding-0 {
+  padding: 0rem !important;
+}
+
+.spacing-clean {
+padding: 0rem !important;
+margin: 0rem !important;
+}
+
+.margin-top {
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-top {
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+  
+.margin-right {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-right {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-bottom {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+
+.padding-bottom {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.margin-left {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+  
+.padding-left {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+  
+.margin-horizontal {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+
+.padding-horizontal {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+
+.margin-vertical {
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+  
+.padding-vertical {
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+/* Apply "..." at 100% width */
+.truncate-width { 
+		width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+/* Removes native scrollbar */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none; 
+    scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* ============================================================
+   Scroll indicator (hero section bottom) — canonical definition.
+   Previously embedded as an inline <style> JSX tag in Home.jsx.
+   ============================================================ */
+.scroll-indicator {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-family: 'Archivo', sans-serif;
+  cursor: pointer;
+  z-index: 99999;
+  text-decoration: none;
+}
+
+.scroll-indicator .arrow {
+  width: 2px;
+  height: 20px;
+  background: #fff;
+  margin: 0 auto;
+  position: relative;
+  animation: scroll-arrow-bounce 1.5s infinite;
+}
+
+.scroll-indicator .arrow::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.scroll-indicator .scroll-text {
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  font-family: 'Archivo', sans-serif;
+}
+
+@keyframes scroll-arrow-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+
+
+.color-scheme-1 {}
+
+  .color-scheme-2 {
+    --color-scheme-1--text: var(--color-scheme-2--text);
+    --color-scheme-1--background: var(--color-scheme-2--background);
+    --color-scheme-1--foreground: var(--color-scheme-2--foreground);
+    --color-scheme-1--border: var(--color-scheme-2--border);
+    --color-scheme-1--accent: var(--color-scheme-2--accent);
+  }
+
+
+  .color-scheme-3 {
+    --color-scheme-1--text: var(--color-scheme-3--text);
+    --color-scheme-1--background: var(--color-scheme-3--background);
+    --color-scheme-1--foreground: var(--color-scheme-3--foreground);
+    --color-scheme-1--border: var(--color-scheme-3--border);
+    --color-scheme-1--accent: var(--color-scheme-3--accent);
+  }
+
+  
+
+.w-slider-dot {
+  background-color: var(--color-scheme-1--text);
+  opacity: 0.20;
+}
+
+.w-slider-dot.w-active {
+  background-color: var(--color-scheme-1--text);
+  opacity: 1;
+}
+
+/* Override .w-slider-nav-invert styles */
+.w-slider-nav-invert .w-slider-dot {
+  background-color: var(--color-scheme-1--text) !important;
+  opacity: 0.20 !important;
+}
+
+.w-slider-nav-invert .w-slider-dot.w-active {
+  background-color: var(--color-scheme-1--text) !important;
+  opacity: 1 !important;
+}
+
+
+/* ============================================================
+   Bubble-arrow button — single canonical definition.
+   Previously this block was copy-pasted as inline <style> tags
+   inside every JSX button component, which injected duplicate
+   rules to the DOM on every render and caused cascade/transform
+   conflicts. Defined once here, removed from all JSX files.
+   ============================================================ */
+
+.btn-bubble-arrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.btn-bubble-arrow__content {
+  transition: transform 0.735s cubic-bezier(0.625, 0.05, 0, 1);
+  transform: translateX(-3.75em) rotate(0.001deg);
+}
+
+.btn-bubble-arrow__arrow {
+  transition: transform 0.735s cubic-bezier(0.625, 0.05, 0, 1);
+  transform: scale(0) rotate(0.001deg);
+  transform-origin: left;
+}
+
+.btn-bubble-arrow__arrow-svg {
+  transition: transform 0.735s cubic-bezier(0.625, 0.05, 0, 1);
+  transform: rotate(0.001deg);
+}
+
+.btn-bubble-arrow__arrow.is--duplicate {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  transform: scale(1) rotate(0.001deg);
+  transform-origin: right;
+}
+
+/* Hover states */
+.btn-bubble-arrow:hover .btn-bubble-arrow__content {
+  transform: translateX(0em) rotate(0.001deg);
+}
+
+.btn-bubble-arrow:hover .btn-bubble-arrow__arrow-svg {
+  transform: rotate(-45deg);
+}
+
+.btn-bubble-arrow:hover .btn-bubble-arrow__arrow {
+  transform: scale(1) rotate(0.001deg);
+}
+
+.btn-bubble-arrow:hover .btn-bubble-arrow__arrow.is--duplicate {
+  transform: scale(0) rotate(0.001deg);
+}
+
+/* ============================================================
+   section_layout421 — "Capturing Moments" dispersed image mosaic
+   Matches the Webflow reference scattered layout with 5 images.
+   ============================================================ */
+.section_layout421 {
+  overflow: hidden;
+}
+
+.layout421_component {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout421_content {
+  position: relative;
+  z-index: 1;
+}
+
+.layout421_content-bottom {
+  position: relative;
+  width: 100%;
+  padding-top: 3rem;
+  padding-bottom: 6rem;
+}
+
+.layout421_images-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  height: 700px;
+  padding: 0 2rem;
+}
+
+.layout421_image-wrapper {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.layout421_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Image 1 — large left spanning image */
+.layout421_image-wrapper.is-image1 {
+  top: 0;
+  left: 0;
+  width: 42%;
+  height: 55%;
+}
+
+/* Image 2 — tall portrait right-of-center */
+.layout421_image-wrapper.is-image2 {
+  top: 0;
+  left: 44%;
+  width: 26%;
+  height: 75%;
+}
+
+/* Image 3 — short landscape far right */
+.layout421_image-wrapper.is-image3 {
+  top: 0;
+  right: 0;
+  width: 27%;
+  height: 42%;
+}
+
+/* Image 4 — large bottom-left */
+.layout421_image-wrapper.is-image4 {
+  bottom: 0;
+  left: 0;
+  width: 55%;
+  height: 42%;
+}
+
+/* Image 5 — bottom right fills remaining space */
+.layout421_image-wrapper.is-image5 {
+  bottom: 0;
+  right: 0;
+  width: 43%;
+  height: 55%;
+}
+
+/* Responsive — tablet */
+@media screen and (max-width: 991px) {
+  .layout421_images-wrapper {
+    height: 550px;
+  }
+}
+
+/* Responsive — mobile: stack into a simple 2-col grid */
+@media screen and (max-width: 767px) {
+  .layout421_images-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.75rem;
+    height: auto;
+    position: static;
+    padding: 0 1rem;
+  }
+
+  .layout421_image-wrapper,
+  .layout421_image-wrapper.is-image1,
+  .layout421_image-wrapper.is-image2,
+  .layout421_image-wrapper.is-image3,
+  .layout421_image-wrapper.is-image4,
+  .layout421_image-wrapper.is-image5 {
+    position: static;
+    width: 100%;
+    height: 200px;
+  }
+
+  .layout421_image-wrapper.is-image1 {
+    grid-column: 1 / -1;
+    height: 260px;
+  }
+}
